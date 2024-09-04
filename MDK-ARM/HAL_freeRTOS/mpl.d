@@ -1,0 +1,16 @@
+hal_freertos\mpl.o: ..\DMP\mllite\mpl.c
+hal_freertos\mpl.o: ..\DMP\mllite\storage_manager.h
+hal_freertos\mpl.o: ../DMP/driver/include/mltypes.h
+hal_freertos\mpl.o: ../DMP/driver/include/stdint_invensense.h
+hal_freertos\mpl.o: D:\keil5\keil5_MDK\keil5_MDK_32\ARM\ARMCC\Bin\..\include\stdint.h
+hal_freertos\mpl.o: D:\keil5\keil5_MDK\keil5_MDK_32\ARM\ARMCC\Bin\..\include\errno.h
+hal_freertos\mpl.o: D:\keil5\keil5_MDK\keil5_MDK_32\ARM\ARMCC\Bin\..\include\limits.h
+hal_freertos\mpl.o: D:\keil5\keil5_MDK\keil5_MDK_32\ARM\ARMCC\Bin\..\include\stddef.h
+hal_freertos\mpl.o: ../DMP/driver/include/log.h
+hal_freertos\mpl.o: D:\keil5\keil5_MDK\keil5_MDK_32\ARM\ARMCC\Bin\..\include\stdlib.h
+hal_freertos\mpl.o: D:\keil5\keil5_MDK\keil5_MDK_32\ARM\ARMCC\Bin\..\include\stdarg.h
+hal_freertos\mpl.o: ..\DMP\mllite\mpl.h
+hal_freertos\mpl.o: ..\DMP\mllite\start_manager.h
+hal_freertos\mpl.o: ..\DMP\mllite\data_builder.h
+hal_freertos\mpl.o: ..\DMP\mllite\results_holder.h
+hal_freertos\mpl.o: ../DMP/driver/include/mlinclude.h
