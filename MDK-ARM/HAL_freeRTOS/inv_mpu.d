@@ -73,7 +73,7 @@ hal_freertos\inv_mpu.o: ../DMP/driver/include/mpu.h
 hal_freertos\inv_mpu.o: ../DMP/driver/stm32L/packet.h
 hal_freertos\inv_mpu.o: ..\DMP\inv_mpu_dmp_motion_driver.h
 hal_freertos\inv_mpu.o: ../MPU9250_HW/IIC/myiic.h
-hal_freertos\inv_mpu.o: ..\SYSTEM\delay\delay.h
+hal_freertos\inv_mpu.o: ../SYSTEM/delay/delay.h
 hal_freertos\inv_mpu.o: ../Core/Inc/usart.h
 hal_freertos\inv_mpu.o: ../Core/Inc/main.h
 hal_freertos\inv_mpu.o: ../Core/Inc/gpio.h

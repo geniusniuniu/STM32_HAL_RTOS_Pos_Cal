@@ -34,7 +34,7 @@ hal_freertos\stm32f4xx_hal_msp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_
 hal_freertos\stm32f4xx_hal_msp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 hal_freertos\stm32f4xx_hal_msp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 hal_freertos\stm32f4xx_hal_msp.o: ../SYSTEM/sys/sys.h
-hal_freertos\stm32f4xx_hal_msp.o: ..\SYSTEM\delay\delay.h
+hal_freertos\stm32f4xx_hal_msp.o: ../SYSTEM/delay/delay.h
 hal_freertos\stm32f4xx_hal_msp.o: ../Core/Inc/gpio.h
 hal_freertos\stm32f4xx_hal_msp.o: ../Core/Inc/main.h
 hal_freertos\stm32f4xx_hal_msp.o: D:\keil5\keil5_MDK\keil5_MDK_32\ARM\ARMCC\Bin\..\include\stdio.h

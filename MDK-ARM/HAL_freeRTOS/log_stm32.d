@@ -45,7 +45,7 @@ hal_freertos\log_stm32.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart
 hal_freertos\log_stm32.o: ../Core/Inc/usart.h
 hal_freertos\log_stm32.o: ../Core/Inc/main.h
 hal_freertos\log_stm32.o: ../SYSTEM/sys/sys.h
-hal_freertos\log_stm32.o: ..\SYSTEM\delay\delay.h
+hal_freertos\log_stm32.o: ../SYSTEM/delay/delay.h
 hal_freertos\log_stm32.o: ../Core/Inc/gpio.h
 hal_freertos\log_stm32.o: ../Core/Inc/main.h
 hal_freertos\log_stm32.o: D:\keil5\keil5_MDK\keil5_MDK_32\ARM\ARMCC\Bin\..\include\math.h

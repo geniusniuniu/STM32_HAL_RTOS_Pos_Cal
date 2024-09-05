@@ -43,7 +43,7 @@ hal_freertos\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 hal_freertos\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 hal_freertos\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 hal_freertos\freertos.o: ../SYSTEM/sys/sys.h
-hal_freertos\freertos.o: ..\SYSTEM\delay\delay.h
+hal_freertos\freertos.o: ../SYSTEM/delay/delay.h
 hal_freertos\freertos.o: ../Core/Inc/gpio.h
 hal_freertos\freertos.o: ../Core/Inc/main.h
 hal_freertos\freertos.o: D:\keil5\keil5_MDK\keil5_MDK_32\ARM\ARMCC\Bin\..\include\stdio.h
@@ -76,3 +76,6 @@ hal_freertos\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V
 hal_freertos\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 hal_freertos\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 hal_freertos\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
+hal_freertos\freertos.o: ../BMI088/position.h
+hal_freertos\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
+hal_freertos\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h

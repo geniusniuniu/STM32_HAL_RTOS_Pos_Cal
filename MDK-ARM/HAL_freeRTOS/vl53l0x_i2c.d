@@ -34,4 +34,4 @@ hal_freertos\vl53l0x_i2c.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pw
 hal_freertos\vl53l0x_i2c.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 hal_freertos\vl53l0x_i2c.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 hal_freertos\vl53l0x_i2c.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
-hal_freertos\vl53l0x_i2c.o: ..\SYSTEM\delay\delay.h
+hal_freertos\vl53l0x_i2c.o: ../SYSTEM/delay/delay.h

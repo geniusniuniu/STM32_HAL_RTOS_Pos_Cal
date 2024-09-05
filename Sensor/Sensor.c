@@ -17,6 +17,7 @@ struct bmi08x_dev dev = {
 u8 device_id;
 u8 MPU_Res;
 
+
 void BMI088_InitFunc(void)
 {
 	int8_t IMU_Res;//记录IMU初始化状态
@@ -84,7 +85,7 @@ void MPU9250_DMP_InitFunc(void)
 void VL53L0x_InitFunc(void)
 {	
 	//使用片选信号启动第一个tof
-	HAL_GPIO_WritePin(GPIOA,GPIO_PIN_3,GPIO_PIN_SET  );	
+	HAL_GPIO_WritePin(GPIOA,GPIO_PIN_3,GPIO_PIN_SET);	
 	HAL_Delay(100);	//等待，确保tof启动
 	while(vl53l0x_init(&vl53l0x_dev[Axis_X],Xshut_Pin_X))//使用默认地址初始化第一个tof
 	{
@@ -138,26 +139,45 @@ void VL53L0x_InitFunc(void)
 
 }
 
-//VL53L0X测试程序
+//VL53L0X测试程序(死循环)
 void vl53l0x_test(void)
 {   
 	VL53L0X_Error status = 0; 
 	static char buf[VL53L0X_MAX_STRING_LENGTH];//测试模式字符串字符缓冲区
 		  	 
-	status = vl53l0x_start_single_test(&vl53l0x_dev[Axis_X],Axis_X,&vl53l0x_data[Axis_X],buf);
-	status = vl53l0x_start_single_test(&vl53l0x_dev[Axis_Y],Axis_Y,&vl53l0x_data[Axis_Y],buf);
-	status = vl53l0x_start_single_test(&vl53l0x_dev[Axis_Z],Axis_Z,&vl53l0x_data[Axis_Z],buf);
-	Dis_Filter_Window(Distance_data);
-	 
-	if(status == VL53L0X_ERROR_NONE)
+	while(1)
 	{
-		printf("%d,%d,%d\r\n",Distance_data[Axis_X],Distance_data[Axis_Y],Distance_data[Axis_Z]);
-	}
-	else
-		printf("Status:%d\r\n",status);	
-	
+		status = vl53l0x_start_single_test(&vl53l0x_dev[Axis_X],Axis_X,&vl53l0x_data[Axis_X],buf);
+		status = vl53l0x_start_single_test(&vl53l0x_dev[Axis_Y],Axis_Y,&vl53l0x_data[Axis_Y],buf);
+		status = vl53l0x_start_single_test(&vl53l0x_dev[Axis_Z],Axis_Z,&vl53l0x_data[Axis_Z],buf);
+//		滤波...
+		 
+		if(status == VL53L0X_ERROR_NONE)
+		{
+			printf("%d,%d,%d\r\n",Distance_data[Axis_X],Distance_data[Axis_Y],Distance_data[Axis_Z]);
+		}
+		else
+			printf("Status:%d\r\n",status);	
+	}	
 }
 
+uint16_t filter_buf[3][FILTER_N + 1] = {0};
+//void Dis_Filter_Window(uint16_t *Dis, uint16_t index) 
+//{
+//    int i = 0;
+//    uint16_t filter_sum = 0;
+//	
+//	filter_buf[index][FILTER_N] = *Dis;
+//    // 滑动窗口更新
+//    for(i = 0; i < FILTER_N; i++) 
+//    {
+//        filter_buf[index][i] = filter_buf[index][i + 1]; 
+//        filter_sum += filter_buf[index][i];
+//    }
+//	
+//    // 计算滑动窗口内的平均值
+//    *Dis = (uint16_t)(filter_sum / FILTER_N);
+//}
 
 void Dis_Filter_Window(uint16_t* Dis) 
 {

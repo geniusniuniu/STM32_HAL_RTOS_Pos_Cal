@@ -49,7 +49,7 @@ hal_freertos\vl53l0x_api.o: ../VL53L0X/demo/vl53l0x_gen.h
 hal_freertos\vl53l0x_api.o: ../VL53L0X/demo/vl53l0x.h
 hal_freertos\vl53l0x_api.o: ../VL53L0X/demo/vl53l0x_cali.h
 hal_freertos\vl53l0x_api.o: ../VL53L0X/demo/vl53l0x_it.h
-hal_freertos\vl53l0x_api.o: ..\SYSTEM\delay\delay.h
+hal_freertos\vl53l0x_api.o: ../SYSTEM/delay/delay.h
 hal_freertos\vl53l0x_api.o: ../VL53L0X/core/inc/vl53l0x_tuning.h
 hal_freertos\vl53l0x_api.o: ../VL53L0X/core/inc/vl53l0x_interrupt_threshold_settings.h
 hal_freertos\vl53l0x_api.o: ../VL53L0X/core/inc/vl53l0x_api_core.h

@@ -49,7 +49,7 @@ hal_freertos\vl53l0x_api_core.o: ../VL53L0X/demo/vl53l0x_gen.h
 hal_freertos\vl53l0x_api_core.o: ../VL53L0X/demo/vl53l0x.h
 hal_freertos\vl53l0x_api_core.o: ../VL53L0X/demo/vl53l0x_cali.h
 hal_freertos\vl53l0x_api_core.o: ../VL53L0X/demo/vl53l0x_it.h
-hal_freertos\vl53l0x_api_core.o: ..\SYSTEM\delay\delay.h
+hal_freertos\vl53l0x_api_core.o: ../SYSTEM/delay/delay.h
 hal_freertos\vl53l0x_api_core.o: ../VL53L0X/core/inc/vl53l0x_api_core.h
 hal_freertos\vl53l0x_api_core.o: ../VL53L0X/core/inc/vl53l0x_api_calibration.h
 hal_freertos\vl53l0x_api_core.o: D:\keil5\keil5_MDK\keil5_MDK_32\ARM\ARMCC\Bin\..\include\stdlib.h

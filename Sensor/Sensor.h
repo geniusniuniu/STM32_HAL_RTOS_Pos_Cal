@@ -3,6 +3,9 @@
 
 #include "main.h"
 
+#define LIMIT_OUTPUT(x)   ((x)<10?10:((x)>1299?1299:(x)))
+
+
 extern struct bmi08x_dev dev;
 extern struct bmi08x_sensor_data user_accel_bmi088;
 extern struct bmi08x_sensor_data user_gyro_bmi088;
@@ -16,7 +19,9 @@ void MPU9250_DMP_InitFunc(void);
 void VL53L0x_InitFunc(void);
 void vl53l0x_test(void);
 void SystemClock_Config(void);
-void Dis_Filter_Window(uint16_t* Dis); 
+//void Dis_Filter_Window(uint16_t *Dis,uint16_t index); 
+void Dis_Filter_Window(uint16_t* Dis);
+
 
 #endif
 

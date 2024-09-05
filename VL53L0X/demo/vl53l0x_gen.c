@@ -90,11 +90,12 @@ VL53L0X_Error vl53l0x_start_single_test(VL53L0X_Dev_t *dev,uint8_t index,VL53L0X
 	if(status !=VL53L0X_ERROR_NONE) 
 		return status;
    
-	RangeStatus = pdata->RangeStatus;//获取当前测量状态
+	RangeStatus = pdata->RangeStatus;			  //获取当前测量状态
     memset(buf,0x00,VL53L0X_MAX_STRING_LENGTH);
 	VL53L0X_GetRangeStatusString(RangeStatus,buf);//根据测量状态读取状态字符串
 	
-	Distance_data[index] = pdata->RangeMilliMeter;//保存最近一次测距测量数据
+	// 对输出值进行限幅1300mm以内
+	Distance_data[index] = LIMIT_OUTPUT(pdata->RangeMilliMeter);//pdata->RangeMilliMeter;//保存最近一次测距测量数据
 	
     return status;
 }
@@ -110,10 +111,10 @@ void vl53l0x_general_test(VL53L0X_Dev_t *dev)
 	mode=HIGH_ACCURACY;
 	switch(mode)
 	{
-	 case Default_Mode:   printf("Default \n\r"); break;//默认
-	 case HIGH_ACCURACY:  printf("High Accuracy \n\r"); break;//高精度
-	 case LONG_RANGE:     printf("Long Range \n\r"); break;//长距离
-	 case HIGH_SPEED:     printf("High Speed \n\r"); break;//高速
+		 case Default_Mode:   printf("Default \n\r"); 		break;//默认
+		 case HIGH_ACCURACY:  printf("High Accuracy \n\r"); break;//高精度
+		 case LONG_RANGE:     printf("Long Range \n\r"); 	break;//长距离
+		 case HIGH_SPEED:     printf("High Speed \n\r"); 	break;//高速
 	}
 
 }

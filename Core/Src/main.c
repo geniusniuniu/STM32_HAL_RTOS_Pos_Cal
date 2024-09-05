@@ -96,8 +96,12 @@ int main(void)
   MX_I2C1_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-  
 	delay_init(168);
+	XShut_PinInit();
+	
+	//相关函数的参数初始化
+	LPF2_ParamSet(50, 8);
+	Pos_Filter_Init();
 	//初始化不同的IIC接口
   	SoftSim_IIC_Init();
 	VL53L0X_i2c_init();	
@@ -105,10 +109,9 @@ int main(void)
 	//IMU初始化
 	BMI088_InitFunc();
 	MPU9250_DMP_InitFunc();
-	
-	//相关函数的参数初始化
-	LPF2_ParamSet(50, 8);
-	Pos_Filter_Init();
+	VL53L0x_InitFunc();
+
+
 	HAL_TIM_Base_Start_IT(&htim2);	//开启TIM2中断
 	exti_GPIO_Init();				//MPU9250外部中断引脚初始化
 	printf("ALL Peripheral Initial OK\r\n");

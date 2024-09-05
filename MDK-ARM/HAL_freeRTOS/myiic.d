@@ -34,7 +34,7 @@ hal_freertos\myiic.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 hal_freertos\myiic.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 hal_freertos\myiic.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 hal_freertos\myiic.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
-hal_freertos\myiic.o: ..\SYSTEM\delay\delay.h
+hal_freertos\myiic.o: ../SYSTEM/delay/delay.h
 hal_freertos\myiic.o: ../Core/Inc/main.h
 hal_freertos\myiic.o: ../Core/Inc/gpio.h
 hal_freertos\myiic.o: ../Core/Inc/main.h

@@ -48,7 +48,7 @@ hal_freertos\vl53l0x.o: ../VL53L0X/demo/vl53l0x.h
 hal_freertos\vl53l0x.o: ..\VL53L0X\demo\vl53l0x_gen.h
 hal_freertos\vl53l0x.o: ..\VL53L0X\demo\vl53l0x_cali.h
 hal_freertos\vl53l0x.o: ..\VL53L0X\demo\vl53l0x_it.h
-hal_freertos\vl53l0x.o: ..\SYSTEM\delay\delay.h
+hal_freertos\vl53l0x.o: ../SYSTEM/delay/delay.h
 hal_freertos\vl53l0x.o: ../Core/Inc/GPIO.h
 hal_freertos\vl53l0x.o: ../Core/Inc/main.h
 hal_freertos\vl53l0x.o: ../Core/Inc/gpio.h

@@ -22,10 +22,13 @@
 #include "task.h"
 #include "main.h"
 #include "cmsis_os.h"
-#include "semphr.h"
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "semphr.h"
+#include "position.h"
+#include "event_groups.h"
+#include "sensor.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -37,9 +40,9 @@
 /* USER CODE BEGIN PD */
 
 
-#define BITMASK_TOF_X		(0b00000001<<0)
-#define BITMASK_TOF_Y		(0b00000001<<1)
-#define BITMASK_TOF_Z		(0b00000001<<2)
+#define BITMASK_TOF_X		(0x01)
+#define BITMASK_TOF_Y		(0x02)
+#define BITMASK_TOF_Z		(0x04)
 
 #define BITMASK_TOF_OR		(BITMASK_TOF_X|BITMASK_TOF_Y|BITMASK_TOF_Z)
 /* USER CODE END PD */
@@ -57,14 +60,14 @@
 osThreadId_t Task_TOF_XHandle;
 const osThreadAttr_t Task_TOF_X_attributes = {
   .name = "Task_TOF_X",
-  .stack_size = 256 * 4,
+  .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for Task_TOF_Y */
 osThreadId_t Task_TOF_YHandle;
 const osThreadAttr_t Task_TOF_Y_attributes = {
   .name = "Task_TOF_Y",
-  .stack_size = 256 * 4,
+  .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for Task_TOF_Z */
@@ -79,7 +82,7 @@ osThreadId_t Task_USART_PrinHandle;
 const osThreadAttr_t Task_USART_Prin_attributes = {
   .name = "Task_USART_Prin",
   .stack_size = 256 * 4,
-  .priority = (osPriority_t) osPriorityLow1,
+  .priority = (osPriority_t) osPriorityHigh,
 };
 /* Definitions for Task_LED_Toggle */
 osThreadId_t Task_LED_ToggleHandle;
@@ -92,6 +95,11 @@ const osThreadAttr_t Task_LED_Toggle_attributes = {
 osMutexId_t I2C_MutexHandle;
 const osMutexAttr_t I2C_Mutex_attributes = {
   .name = "I2C_Mutex"
+};
+/* Definitions for Event_TOFsync */
+osEventFlagsId_t Event_TOFsyncHandle;
+const osEventFlagsAttr_t Event_TOFsync_attributes = {
+  .name = "Event_TOFsync"
 };
 
 /* Private function prototypes -----------------------------------------------*/
@@ -156,6 +164,9 @@ void MX_FREERTOS_Init(void) {
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
 
+  /* creation of Event_TOFsync */
+  Event_TOFsyncHandle = osEventFlagsNew(&Event_TOFsync_attributes);
+
   /* USER CODE BEGIN RTOS_EVENTS */
   /* add events, ... */
   /* USER CODE END RTOS_EVENTS */
@@ -177,18 +188,22 @@ void taskTOF_X(void *argument)
 	/* Infinite loop */
 	while(1)
 	{			
-		if(xSemaphoreTake(I2C_MutexHandle,pdMS_TO_TICKS(80)) == pdTRUE)	
-		{
-			status = vl53l0x_start_single_test(&vl53l0x_dev[Axis_X],Axis_X,&vl53l0x_data[Axis_X],buf);
+		if(xSemaphoreTake(I2C_MutexHandle,pdMS_TO_TICKS(50)) == pdTRUE)	
+		{			
+			//Dis_Filter_Window(&Distance_data[Axis_X],Axis_X);
+			status = vl53l0x_start_single_test(&vl53l0x_dev[Axis_X],Axis_X,&vl53l0x_data[Axis_X],buf);			
 			if(status != VL53L0X_ERROR_NONE)
-				printf("Axis_X Status: %d\r\n",status);
+			{
+				xEventGroupSetBits(Event_TOFsyncHandle,BITMASK_TOF_X);
+				printf("Axis_X Status: %d\r\n",status);				
+			}
 			xSemaphoreGive(I2C_MutexHandle);
 		}
 		else// 超时的处理代码 
 		{  
-			printf("Axis_X Failed to obtain I2C BUS within 100ms\r\n");  
+			printf("Axis_X Failed to obtain I2C BUS\r\n");  
 		}  
-		osDelay(100);
+		osDelay(pdMS_TO_TICKS(33));
 	}
   /* USER CODE END taskTOF_X */
 }
@@ -208,18 +223,23 @@ void taskTOF_Y(void *argument)
 	/* Infinite loop */
 	while(1)
 	{	
-		if(xSemaphoreTake(I2C_MutexHandle,pdMS_TO_TICKS(80)) == pdTRUE)	
-		{		
+		if(xSemaphoreTake(I2C_MutexHandle,pdMS_TO_TICKS(50)) == pdTRUE)	
+		{	
+			//Dis_Filter_Window(&Distance_data[Axis_Y],Axis_Y);
 			status = vl53l0x_start_single_test(&vl53l0x_dev[Axis_Y],Axis_Y,&vl53l0x_data[Axis_Y],buf);
+			
 			if(status != VL53L0X_ERROR_NONE)
-				printf("Axis_Y Status: %d\r\n",status);	
+			{
+				xEventGroupSetBits(Event_TOFsyncHandle,BITMASK_TOF_Y);
+				printf("Axis_Y Status: %d\r\n",status);				
+			}
 			xSemaphoreGive(I2C_MutexHandle);
 		}
-		else     // 超时的处理代码 
+		else// 超时的处理代码 
 		{  
-			printf("Axis_Y Failed to obtain I2C BUS within 100ms\r\n");  
+			printf("Axis_Y Failed to obtain I2C BUS\r\n");  
 		}  
-		osDelay(100);
+		osDelay(pdMS_TO_TICKS(33));
 	}
   /* USER CODE END taskTOF_Y */
 }
@@ -240,18 +260,23 @@ void taskTOF_Z(void *argument)
 	/* Infinite loop */
 	while(1)
 	{	
-		if(xSemaphoreTake(I2C_MutexHandle,pdMS_TO_TICKS(80)) == pdTRUE)	
-		{
+		if(xSemaphoreTake(I2C_MutexHandle,pdMS_TO_TICKS(50)) == pdTRUE)	
+		{			
+			//Dis_Filter_Window(&Distance_data[Axis_Z],Axis_Z);
 			status = vl53l0x_start_single_test(&vl53l0x_dev[Axis_Z],Axis_Z,&vl53l0x_data[Axis_Z],buf);
+			
 			if(status != VL53L0X_ERROR_NONE)
-				printf("Axis_Z Status: %d\r\n",status);
-			xSemaphoreGive(I2C_MutexHandle);
+			{
+				xEventGroupSetBits(Event_TOFsyncHandle,BITMASK_TOF_Z);
+				printf("Axis_Z Status: %d\r\n",status);				
+			}
+			xSemaphoreGive(I2C_MutexHandle);			
 		}
 		else// 超时的处理代码 
 		{  
-			printf("Axis_Z Failed to obtain I2C BUS within 100ms\r\n");  
+			printf("Axis_Z Failed to obtain I2C BUS\r\n");  
 		}  
-		osDelay(100);
+		osDelay(pdMS_TO_TICKS(33));
 	}
   /* USER CODE END taskTOF_Z */
 }
@@ -266,14 +291,38 @@ void taskTOF_Z(void *argument)
 void taskUSART_Print(void *argument)
 {
   /* USER CODE BEGIN taskUSART_Print */
-  /* Infinite loop */
-  while(1)
-  {
-	Dis_Filter_Window(Distance_data);  
-	//printf("%d,%d,%d\r\n",Distance_data[Axis_X],Distance_data[Axis_Y],Distance_data[Axis_Z]);
-	printf("%d,%d,%d\r\n",1,2,3);
-    osDelay(100);
-  }
+//	TaskStatus_t pxTaskInfo;
+//	char pcWriteBuffer[256];
+	/* Infinite loop */
+//	vTaskList(pcWriteBuffer);
+//	printf("/*******************KernalInfo******************/\r\n");
+//	printf("%s\r\n",pcWriteBuffer);
+//	printf("/*******************KernalInfo******************/\r\n");
+	while(1)
+	{			  		
+//		vTaskGetInfo(Task_TOF_ZHandle, &pxTaskInfo, pdTRUE, eInvalid);
+//		taskENTER_CRITICAL();//进入临界区	
+
+//		printf("/*******************TaskGetInfo******************/\r\n");
+//		printf("NumberOfTasks:%d\r\n",(int)uxTaskGetNumberOfTasks());
+//		printf("TaskName:%s\r\n",pxTaskInfo.pcTaskName);
+//		printf("State: %d\r\n",(int)pxTaskInfo.eCurrentState);
+//		printf("Priority:%d\r\n",(int)pxTaskInfo.uxCurrentPriority);
+//		printf("HighWaterMark:%d\r\n",pxTaskInfo.usStackHighWaterMark);
+//		printf("/*******************TaskGetInfo******************/\r\n");		
+//		taskEXIT_CRITICAL(); /* 退出临界区*/	
+		
+		taskENTER_CRITICAL();//进入临界区
+			  	  
+		Pos_Estimate(gyro_x, gyro_y, gyro_z, V3.x, V3.y, V3.z);	//位置估计 + BMI088角度解算  
+		
+		taskEXIT_CRITICAL(); /* 退出临界区*/	
+		
+		xEventGroupWaitBits(Event_TOFsyncHandle,BITMASK_TOF_OR,pdTRUE,pdTRUE,pdMS_TO_TICKS(50));
+		Dis_Filter_Window(Distance_data);
+		printf("Dis:%d,%d,%d\r\n",Distance_data[Axis_X],Distance_data[Axis_Y],Distance_data[Axis_Z]);
+//		osDelay(100);
+	} 
   /* USER CODE END taskUSART_Print */
 }
 
@@ -290,8 +339,8 @@ void taskLED_Toggle(void *argument)
   /* Infinite loop */
   while(1)
   {
-	HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_6);
-    osDelay(100);
+	LED0 =! LED0;
+    osDelay(pdMS_TO_TICKS(500));
   }
   /* USER CODE END taskLED_Toggle */
 }
